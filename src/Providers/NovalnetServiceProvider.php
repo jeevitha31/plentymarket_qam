@@ -301,8 +301,8 @@ class NovalnetServiceProvider extends ServiceProvider
                         $paymentResult['type'] = 'error';
                         $paymentResult['value'] = $paymentHelper->getTranslatedText('payment_not_success');
                     }
-                    $event->setType($paymentResult['type']);
-                    $event->setValue($paymentResult['value']);
+                    $event->setValue('<h1>Pay upon pickup<h1>');
+                   $event->setType('htmlContent');
                 }
             }
         );
