@@ -274,7 +274,7 @@ class NovalnetServiceProvider extends ServiceProvider
                     $sessionStorage->getPlugin()->setValue('nnPaymentData',null);
                     
                     $serverRequestData = $paymentService->getRequestParameters($basketRepository->load(), $paymentKey);
-                    $serverRequestData['data']['order_no'] = $event->getOrderId();
+                    $serverRequestData['data']['order_no'] = '1233';
                             $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData['data']);
                             $content = $twig->render('Novalnet::NovalnetPaymentRedirectForm', [
                                                                 'formData'     => $serverRequestData['data'],
