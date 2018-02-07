@@ -256,8 +256,14 @@ class NovalnetServiceProvider extends ServiceProvider
                         }
                         else
                         {
-                            $content = '';
-                                $contentType = 'continue';
+                            $serverRequestData = $paymentService->getRequestParameters($basketRepository->load(), $paymentKey);
+                            $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData['data']);
+                            $content = $twig->render('Novalnet::NovalnetPaymentRedirectForm', [
+                                                                'formData'     => $serverRequestData['data'],
+                                                                'nnPaymentUrl' => $serverRequestData['url']
+                                   ]);
+
+                            $contentType = 'htmlContent';
 
                         }
 
@@ -268,21 +274,12 @@ class NovalnetServiceProvider extends ServiceProvider
 
         // Listen for the event that executes the payment
         $eventDispatcher->listen(ExecutePayment::class,
-            function (ExecutePayment $event) use ($paymentHelper, $paymentService, $sessionStorage, $transactionLogData, $basketRepository, $twig)
+            function (ExecutePayment $event) use ($paymentHelper, $paymentService, $sessionStorage, $transactionLogData)
             {
                 if($paymentHelper->isNovalnetPaymentMethod($event->getMop()))
                 {
                     $requestData = $sessionStorage->getPlugin()->getValue('nnPaymentData');
                     $sessionStorage->getPlugin()->setValue('nnPaymentData',null);
-                    $paymentKey = $paymentHelper->getPaymentKeyByMop($event->getMop());
-                    $serverRequestData = $paymentService->getRequestParameters($basketRepository->load(), $paymentKey);
-                    $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData['data']);
-                    $content = $twig->render('Novalnet::NovalnetPaymentRedirectForm', [
-                                                        'formData'     => $serverRequestData['data'],
-                                                        'nnPaymentUrl' => $serverRequestData['url']
-                           ]);
-
-                    $contentType = 'htmlContent';
                     if(isset($requestData['status']) && in_array($requestData['status'], ['90', '100']))
                     {
                         $requestData['order_no'] = $event->getOrderId();
@@ -310,8 +307,8 @@ class NovalnetServiceProvider extends ServiceProvider
                         $paymentResult['type'] = 'error';
                         $paymentResult['value'] = $paymentHelper->getTranslatedText('payment_not_success');
                     }
-                    $event->setValue($content);
-                   $event->setType($contentType);
+                    $event->setType($paymentResult['type']);
+                    $event->setValue($paymentResult['value']);
                 }
             }
         );
