@@ -256,9 +256,13 @@ class NovalnetServiceProvider extends ServiceProvider
                         }
                         else
                         {
-                            
+                            $content = '';
+                                $contentType = 'continue';
 
                         }
+                        
+                        $event->setValue($content);
+                        $event->setType($contentType);
 
                         
                     }
