@@ -282,6 +282,7 @@ class NovalnetServiceProvider extends ServiceProvider
                     $sessionStorage->getPlugin()->setValue('nnPaymentData',null);
                     if(isset($requestData['status']) && in_array($requestData['status'], ['90', '100']))
                     {
+                        echo __LINE__;die;exit;
                         $requestData['order_no'] = $event->getOrderId();
                         $requestData['mop']      = $event->getMop();
                         $paymentService->sendPostbackCall($requestData);
