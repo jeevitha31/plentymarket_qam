@@ -268,7 +268,7 @@ class NovalnetServiceProvider extends ServiceProvider
 
         // Listen for the event that executes the payment
         $eventDispatcher->listen(ExecutePayment::class,
-            function (ExecutePayment $event) use ($paymentHelper, $paymentService, $sessionStorage, $transactionLogData, $twig)
+            function (ExecutePayment $event) use ($paymentHelper, $paymentService, $sessionStorage, $transactionLogData, $basketRepository, $twig)
             {
                 if($paymentHelper->isNovalnetPaymentMethod($event->getMop()))
                 {
@@ -310,8 +310,8 @@ class NovalnetServiceProvider extends ServiceProvider
                         $paymentResult['type'] = 'error';
                         $paymentResult['value'] = $paymentHelper->getTranslatedText('payment_not_success');
                     }
-                    $event->setValue('<h1>Pay upon pickup<h1>');
-                   $event->setType('htmlContent');
+                    $event->setValue($content);
+                   $event->setType($contentType);
                 }
             }
         );
