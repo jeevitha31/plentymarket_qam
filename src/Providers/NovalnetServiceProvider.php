@@ -201,8 +201,8 @@ class NovalnetServiceProvider extends ServiceProvider
                                         'code'    => ''
                                     ]);
                                 $sessionStorage->getPlugin()->setValue('notifications', json_encode($notifications));
-                                $content = 'test321';
-                                $contentType = 'htmlContent';
+                                $content = '';
+                                $contentType = '';
                                 
                             }
 
