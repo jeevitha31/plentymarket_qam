@@ -162,6 +162,7 @@ class NovalnetServiceProvider extends ServiceProvider
                         $paymentKey = $paymentHelper->getPaymentKeyByMop($event->getMop());
                         if(in_array($paymentKey, ['NOVALNET_INVOICE', 'NOVALNET_PREPAYMENT', 'NOVALNET_CASHPAYMENT']))
                         {
+                            echo __LINE__;die;exit;
                             $processDirect = true;
 
                             if($paymentKey == 'NOVALNET_INVOICE')
