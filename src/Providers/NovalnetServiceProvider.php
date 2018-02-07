@@ -201,8 +201,9 @@ class NovalnetServiceProvider extends ServiceProvider
                                         'code'    => ''
                                     ]);
                                 $sessionStorage->getPlugin()->setValue('notifications', json_encode($notifications));
-                                $content = '';
-                                $contentType = 'continue';
+                                $content = 'test321';
+                                $contentType = 'htmlContent';
+                                
                             }
 
                         } else if (in_array($paymentKey, ['NOVALNET_SEPA', 'NOVALNET_CC']))
