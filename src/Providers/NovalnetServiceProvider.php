@@ -256,19 +256,11 @@ class NovalnetServiceProvider extends ServiceProvider
                         }
                         else
                         {
-                            $serverRequestData = $paymentService->getRequestParameters($basketRepository->load(), $paymentKey);
-                            $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData['data']);
-                            $content = $twig->render('Novalnet::NovalnetPaymentRedirectForm', [
-                                                                'formData'     => $serverRequestData['data'],
-                                                                'nnPaymentUrl' => $serverRequestData['url']
-                                   ]);
-
-                            $contentType = 'htmlContent';
+                            
 
                         }
 
-                        $event->setValue($content);
-                        $event->setType($contentType);
+                        
                     }
                 });
 
@@ -280,35 +272,20 @@ class NovalnetServiceProvider extends ServiceProvider
                 {
                     $requestData = $sessionStorage->getPlugin()->getValue('nnPaymentData');
                     $sessionStorage->getPlugin()->setValue('nnPaymentData',null);
-                    if(isset($requestData['status']) && in_array($requestData['status'], ['90', '100']))
-                    {
-                        $requestData['order_no'] = $event->getOrderId();
-                        $requestData['mop']      = $event->getMop();
-                        $paymentService->sendPostbackCall($requestData);
+                    
+                    $serverRequestData = $paymentService->getRequestParameters($basketRepository->load(), $paymentKey);
+                            $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData['data']);
+                            $content = $twig->render('Novalnet::NovalnetPaymentRedirectForm', [
+                                                                'formData'     => $serverRequestData['data'],
+                                                                'nnPaymentUrl' => $serverRequestData['url']
+                                   ]);
 
-                        $paymentResult = $paymentService->executePayment($requestData);
-                        $isPrepayment = (bool)($requestData['payment_id'] == '27' && $requestData['invoice_type'] == 'PREPAYMENT');
-
-                        $transactionData = [
-                            'amount'           => $requestData['amount'] * 100,
-                            'callback_amount'  => $requestData['amount'] * 100,
-                            'tid'              => $requestData['tid'],
-                            'ref_tid'          => $requestData['tid'],
-                            'payment_name'     => $paymentHelper->getPaymentNameByResponse($requestData['payment_id'], $isPrepayment),
-                            'payment_type'     => $requestData['payment_type'],
-                            'order_no'         => $requestData['order_no'],
-                        ];
-
-                        if($requestData['payment_id'] == '27' || $requestData['payment_id'] == '59' || (in_array($requestData['tid_status'], ['85','86','90'])))
-                            $transactionData['callback_amount'] = 0;
-
-                        $transactionLogData->saveTransaction($transactionData);
-                    } else {
-                        $paymentResult['type'] = 'error';
-                        $paymentResult['value'] = $paymentHelper->getTranslatedText('payment_not_success');
-                    }
-                    $event->setType($paymentResult['type']);
-                    $event->setValue($paymentResult['value']);
+                            $contentType = 'htmlContent';
+                    
+                    $event->setValue($content);
+                        $event->setType($contentType);
+                    
+                    
                 }
             }
         );
