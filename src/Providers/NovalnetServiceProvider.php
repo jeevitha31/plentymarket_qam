@@ -270,6 +270,7 @@ class NovalnetServiceProvider extends ServiceProvider
             {
                 if($paymentHelper->isNovalnetPaymentMethod($event->getMop()))
                 {
+                    echo __LINE__;exit;
                     $requestData = $sessionStorage->getPlugin()->getValue('nnPaymentData');
                     $sessionStorage->getPlugin()->setValue('nnPaymentData',null);
                     
