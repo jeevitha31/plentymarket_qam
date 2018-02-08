@@ -136,7 +136,8 @@ class PaymentController extends Controller
     public function redirectPayment()
     {
         $requestData = $this->request->all();
-        return $this->twig->render('Novalnet::callback.callback', ['comments' => $requestData]);
+        $paymentRequestData = $this->sessionStorage->getPlugin()->getValue('nnPaymentData');
+        return $this->twig->render('Novalnet::callback.callback', ['comments' => $paymentRequestData['first_name']]);
         $requestData = $this->request->all();
         $serverRequestData = $this->paymentService->getRequestParameters($this->basketRepository->load(), $requestData['paymentKey']);
         
