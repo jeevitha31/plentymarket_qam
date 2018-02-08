@@ -505,6 +505,11 @@ class PaymentService
     {
         return $this->webstoreHelper->getCurrentWebstoreConfiguration()->domainSsl . '/payment/novalnet/paymentResponse';
     }
+    
+    public function getRedirectUrl()
+    {
+        return $this->webstoreHelper->getCurrentWebstoreConfiguration()->domainSsl . '/payment/novalnet/redirectPayment';
+    }
 
     /**
     * Get the direct payment process controller URL to be handled
