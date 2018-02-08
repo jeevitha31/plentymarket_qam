@@ -135,6 +135,7 @@ class PaymentController extends Controller
     
     public function redirectPayment()
     {
+        $this->getLogger(__METHOD__)->error('test1', 'ss');
         $requestData = $this->request->all();
         $paymentRequestData = $this->sessionStorage->getPlugin()->getValue('nnPaymentData');
         return $this->twig->render('Novalnet::callback.callback', ['comments' => $paymentRequestData['first_name']]);
