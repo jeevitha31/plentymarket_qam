@@ -157,9 +157,9 @@ class NovalnetServiceProvider extends ServiceProvider
         $eventDispatcher->listen(ExecutePayment::class,
             function (ExecutePayment $event) use ($paymentHelper, $paymentService, $sessionStorage, $transactionLogData)
             {
-                
+                $paymentProcessUrl = $paymentService->getRedirectUrl();
                 $event->setType('redirectUrl');
-                            $event->setValue('https://card.novalnet.de/');
+                            $event->setValue($paymentProcessUrl);
             }
         );
     }
