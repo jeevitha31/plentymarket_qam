@@ -133,6 +133,13 @@ class PaymentController extends Controller
         }
     }
     
+    public function redirectPayment()
+    {
+        $requestData = $this->request->all();
+        $serverRequestData = $this->paymentService->getRequestParameters($this->basketRepository->load(), $requestData['paymentKey']);
+        print_r($serverRequestData['data']);exit;
+    }
+    
     
     /**
      * Process the Form payment
@@ -140,7 +147,6 @@ class PaymentController extends Controller
      */
     public function processPayment()
     {
-        echo __LINE__;die;exit;
         $requestData = $this->request->all();
         if(!empty($requestData['paymentKey']) && in_array($requestData['paymentKey'], ['NOVALNET_CC', 'NOVALNET_SEPA', 'NOVALNET_INVOICE']) && (!empty($requestData['nn_pan_hash']) || !empty($requestData['nn_sepa_hash']) || !empty($requestData['nn_invoice_birthday'])))
         $serverRequestData = $this->paymentService->getRequestParameters($this->basketRepository->load(), $requestData['paymentKey']);
