@@ -159,10 +159,10 @@ class NovalnetServiceProvider extends ServiceProvider
                     $paymentKey = $paymentHelper->getPaymentKeyByMop($event->getMop());
                     $serverRequestData = $paymentService->getRequestParameters($basketRepository->load(), $paymentKey);
                     $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData['data']);
-                    $content = '';
-                    $contentType = 'continue';
-                    $event->setValue($content);
-                    $event->setType($contentType);
+                    //$content = '';
+                    //$contentType = 'continue';
+                    //$event->setValue($content);
+                    //$event->setType($contentType);
                 });
 
 
