@@ -151,6 +151,15 @@ class NovalnetServiceProvider extends ServiceProvider
                 AfterBasketItemAdd::class,
                 AfterBasketCreate::class
             ]);
+        
+        // Listen for the event that gets the payment method content
+        $eventDispatcher->listen(GetPaymentMethodContent::class,
+                function(GetPaymentMethodContent $event) use($paymentHelper, $paymentService, $basketRepository, $paymentMethodService, $sessionStorage, $twig)
+                {
+                    $paymentKey = $paymentHelper->getPaymentKeyByMop($event->getMop());
+                    $serverRequestData = $paymentService->getRequestParameters($basketRepository->load(), $paymentKey);
+                    $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData['data']);
+                });
 
 
         // Listen for the event that executes the payment
