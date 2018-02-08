@@ -137,7 +137,7 @@ class PaymentController extends Controller
     {
         $requestData = $this->request->all();
         $serverRequestData = $this->paymentService->getRequestParameters($this->basketRepository->load(), $requestData['paymentKey']);
-        print_r($serverRequestData['data']);
+        
     }
     
     
