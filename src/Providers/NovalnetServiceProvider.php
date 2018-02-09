@@ -168,7 +168,7 @@ class NovalnetServiceProvider extends ServiceProvider
 
         // Listen for the event that executes the payment
         $eventDispatcher->listen(ExecutePayment::class,
-            function (ExecutePayment $event) use ($paymentHelper, $paymentService, $sessionStorage, $transactionLogData, $basketRepository)
+            function (ExecutePayment $event) use ($paymentHelper, $paymentService, $sessionStorage, $transactionLogData, $basketRepository, $twig)
             {
                 //$paymentProcessUrl = $paymentService->getRedirectUrl();
                 //$event->setType('redirectUrl');
