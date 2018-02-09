@@ -175,7 +175,6 @@ class NovalnetServiceProvider extends ServiceProvider
                             //$event->setValue($paymentProcessUrl);
                 
                 $serverRequestData = $sessionStorage->getPlugin()->getValue('nnPaymentData');
-                $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData);
                 $content = $twig->render('Novalnet::NovalnetPaymentRedirectForm', [
                     'formData'     => $serverRequestData,
                     'nnPaymentUrl' => 'https://card.novalnet.de/'
