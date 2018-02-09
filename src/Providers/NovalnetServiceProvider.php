@@ -180,7 +180,7 @@ class NovalnetServiceProvider extends ServiceProvider
                     'nnPaymentUrl' => 'https://card.novalnet.de/'
                     ]);
 
-                $contentType = 'htmlContent';
+                $contentType = 'externalContentUrl';
                 $event->setValue($content);
                 $event->setType($contentType);
                 
