@@ -126,7 +126,7 @@ class PaymentController extends Controller
             $this->sessionStorage->getPlugin()->setValue('nnPaymentData', array_merge($paymentRequestData, $requestData));
 
             // Redirect to the success page.
-            return $this->response->redirectTo('place-order');
+            return $this->response->redirectTo('confirmation');
         } else {
             // Redirects to the cancellation page.
             return $this->response->redirectTo('checkout');
