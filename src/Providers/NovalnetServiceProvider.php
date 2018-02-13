@@ -170,19 +170,19 @@ class NovalnetServiceProvider extends ServiceProvider
         $eventDispatcher->listen(ExecutePayment::class,
             function (ExecutePayment $event) use ($paymentHelper, $paymentService, $sessionStorage, $transactionLogData, $basketRepository, $twig)
             {
-                //$paymentProcessUrl = $paymentService->getRedirectUrl();
-                //$event->setType('redirectUrl');
-                            //$event->setValue($paymentProcessUrl);
+                $paymentProcessUrl = $paymentService->getRedirectUrl();
+                $event->setType('redirectUrl');
+                $event->setValue($paymentProcessUrl);
                 
-                $serverRequestData = $sessionStorage->getPlugin()->getValue('nnPaymentData');
-                $content = $twig->render('Novalnet::NovalnetPaymentRedirectForm', [
-                    'formData'     => $serverRequestData,
-                    'nnPaymentUrl' => 'https://card.novalnet.de/'
-                    ]);
+                //$serverRequestData = $sessionStorage->getPlugin()->getValue('nnPaymentData');
+                //$content = $twig->render('Novalnet::NovalnetPaymentRedirectForm', [
+                    //'formData'     => $serverRequestData,
+                    //'nnPaymentUrl' => 'https://card.novalnet.de/'
+                    //]);
 
-                $contentType = 'externalContentUrl';
-                $event->setValue($content);
-                $event->setType($contentType);
+                //$contentType = 'externalContentUrl';
+                //$event->setValue($content);
+                //$event->setType($contentType);
                 
             }
         );
