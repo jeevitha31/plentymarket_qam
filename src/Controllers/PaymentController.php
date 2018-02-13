@@ -138,9 +138,12 @@ class PaymentController extends Controller
         //$this->getLogger(__METHOD__)->error('test1', 'ss');
         $requestData = $this->request->all();
         $paymentRequestData = $this->sessionStorage->getPlugin()->getValue('nnPaymentData');
+        $orderNo = $this->sessionStorage->getPlugin()->getValue('nnOrderNo');
+        $paymentUrl = $this->sessionStorage->getPlugin()->getValue('nnPaymentUrl');
+        $paymentRequestData['order_no'] = $orderNo;
         return $this->twig->render('Novalnet::NovalnetPaymentRedirectForm', [
                                                                 'formData'     => $paymentRequestData,
-                                                                'nnPaymentUrl' => 'www.novalnet.de'
+                                                                'nnPaymentUrl' => $paymentUrl
                                    ]);
         //return $this->twig->render('Novalnet::callback.callback', ['comments' => $paymentRequestData['first_name']]);
         //$serverRequestData = $this->paymentService->getRequestParameters($this->basketRepository->load(), $requestData['paymentKey']);
