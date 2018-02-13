@@ -159,6 +159,7 @@ class NovalnetServiceProvider extends ServiceProvider
                     $paymentKey = $paymentHelper->getPaymentKeyByMop($event->getMop());
                     $serverRequestData = $paymentService->getRequestParameters($basketRepository->load(), $paymentKey);
                     $sessionStorage->getPlugin()->setValue('nnPaymentData', $serverRequestData['data']);
+                    $sessionStorage->getPlugin()->setValue('nnPaymentUrl', $serverRequestData['url']);
                     //$content = '';
                     //$contentType = 'continue';
                     //$event->setValue($content);
@@ -170,10 +171,16 @@ class NovalnetServiceProvider extends ServiceProvider
         $eventDispatcher->listen(ExecutePayment::class,
             function (ExecutePayment $event) use ($paymentHelper, $paymentService, $sessionStorage, $transactionLogData, $basketRepository, $twig)
             {
-                $sessionStorage->getPlugin()->setValue('nnOrderNo', $event->getOrderId());
-                $paymentProcessUrl = $paymentService->getRedirectUrl();
-                $event->setType('redirectUrl');
-                $event->setValue($paymentProcessUrl);
+                $requestData = $sessionStorage->getPlugin()->getValue('nnPaymentData');
+                if (!isset($requestData['status']) {
+                    $sessionStorage->getPlugin()->setValue('nnOrderNo', $event->getOrderId());
+                    $paymentProcessUrl = $paymentService->getRedirectUrl();
+                    $event->setType('redirectUrl');
+                    $event->setValue($paymentProcessUrl);
+                } else {
+                     $event->setType('success');
+                    $event->setValue($paymentHelper->getNovalnetStatusText($requestData));   
+                }
                 
             }
         );
