@@ -172,7 +172,7 @@ class NovalnetServiceProvider extends ServiceProvider
             function (ExecutePayment $event) use ($paymentHelper, $paymentService, $sessionStorage, $transactionLogData, $basketRepository, $twig)
             {
                 $requestData = $sessionStorage->getPlugin()->getValue('nnPaymentData');
-                if (!isset($requestData['status']) {
+                if (!isset($requestData['status'])) {
                     $sessionStorage->getPlugin()->setValue('nnOrderNo', $event->getOrderId());
                     $paymentProcessUrl = $paymentService->getRedirectUrl();
                     $event->setType('redirectUrl');
